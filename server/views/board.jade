@@ -1,0 +1,36 @@
+extends layouts/bare
+    
+block scripts
+  script(src="/socket.io/socket.io.js")
+  script(type='text/javascript', src='/vendor/mvc/underscore-min.js')
+  script(type='text/javascript', src='/vendor/mvc/backbone-min.js')
+  script(type='text/javascript', src='/vendor/mvc/handlebars.js')
+  script(type='text/javascript', src='/vendor/mvc/packery.pkgd.min.js')
+  script(type='text/javascript', src='/javascripts/jquery.timeago.js')
+  script(type='text/javascript', src='/javascripts/splashboard.js')
+
+
+  if edit
+    script(type='text/javascript', src='/javascripts/edit.js')
+  else
+    script(type='text/javascript', src='/javascripts/app.js')
+
+
+block styles
+  link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/vendor/bootstrap/css/font-awesome.min.css')
+  link(rel='stylesheet', href='/stylesheets/style.css')
+  link(rel='stylesheet', href='/stylesheets/themes.css')  
+  link(rel='stylesheet', href='/stylesheets/edit.css')
+
+
+
+block content
+  include partials/templates
+  include partials/editor
+
+  
+  #container(class=" #{colorScheme} ")
+
+
+ 
