@@ -7,8 +7,8 @@
 # 'test/spec/**/*.js'
 
 module.exports = (grunt) ->
-  # load all grunt tasks
-  require('matchdep').filterDev('grunt-*').forEach grunt.loadNpmTasks
+  require('load-grunt-tasks')(grunt)
+  require('time-grunt')(grunt)
 
   # configurable paths
   yeomanConfig =
@@ -18,11 +18,6 @@ module.exports = (grunt) ->
     liveReloadPort: 35729
     connectPort: 3000
 
-  preprocessOptions =
-    event: ['added', 'changed']
-    nospawn: true
-    livereload: yeomanConfig.liveReloadPort
-
   try
     yeomanConfig.app = require('./bower.json').appPath or yeomanConfig.app
   catch e
@@ -31,24 +26,31 @@ module.exports = (grunt) ->
     yeoman: yeomanConfig
     watch:
       coffee:
-        options: preprocessOptions
         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee', 'test/spec/{,*/}*.coffee']
-        tasks: ['coffee:single']
+        tasks: ['coffee:dist']
 
       jade:
-        options: preprocessOptions
         files: ['<%= yeoman.app %>/*.jade', '<%= yeoman.app %>/views/{,*/}*.jade']
-        tasks: ['jade:single']
+        tasks: ['jade:dist']
 
       stylus:
-        options: preprocessOptions
         files: ['<%= yeoman.app %>/styles/{,*/}*.styl']
-        tasks: ['stylus:single']
+        tasks: ['stylus:dist', 'autoprefixer']
 
       livereload:
         options:
           livereload: '<%= yeoman.liveReloadPort %>'
         files: ['{.tmp,<%= yeoman.app %>}/{,*/}*.html', '{.tmp,<%= yeoman.app %>}/views/{,*/}*.html', '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css', '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js', '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}']
+
+    autoprefixer:
+      options: ['last 1 version']
+      dist:
+        files: [
+          expand: true
+          cwd: '.tmp/styles/'
+          src: '{,*/}*.css'
+          dest: '.tmp/styles/'
+        ]
 
     open:
       server:
@@ -89,9 +91,6 @@ module.exports = (grunt) ->
           dest: '.tmp/spec'
           ext: '.js'
         ]
-      single:
-        src: ''
-        dest: ''
 
     jade:
       options:
@@ -110,9 +109,6 @@ module.exports = (grunt) ->
           dest: '.tmp/views'
           ext: '.html'
         ]
-      single:
-        src: ''
-        dest: ''
 
     stylus:
       dist:
@@ -123,35 +119,29 @@ module.exports = (grunt) ->
           dest: '.tmp/styles'
           ext: '.css'
         ]
-      single:
-        src: ''
-        dest: ''
 
     browserify:
       options:
-        noParse: ['angular', 'Packery']
+        noParse: ['angular']
         debug: true
         transform: ['coffeeify']
         shim:
           angular:
             path: '<%= yeoman.app %>/bower_components/angular/angular.js'
             exports: 'angular'
-          Packery:
-            path: '<%= yeoman.app %>/vendor/packery/packery.pkgd.js'
-            exports: 'Packery'
       server:
         src: '<%= yeoman.app %>/scripts/app.coffee'
-        dest: '.tmp/scripts/modules.js'
+        dest: '.tmp/scripts/module.js'
       dist:
         src: '<%= yeoman.app %>/scripts/app.coffee'
-        dest: '<%= yeoman.dist %>/scripts/modules.js'
-
+        dest: '<%= yeoman.dist %>/scripts/module.js'
 
     # not used since Uglify task does concat,
     # but still available if needed
     #concat: {
     #      dist: {}
     #    },
+
     rev:
       dist:
         files:
@@ -188,30 +178,29 @@ module.exports = (grunt) ->
         ]
 
     cssmin: {}
-
-    # By default, your `index.html` <!-- Usemin Block --> will take care of
-    # minification. This option is pre-configured if you do not wish to use
-    # Usemin blocks.
-    # dist: {
-    #   files: {
-    #     '<%= yeoman.dist %>/styles/main.css': [
-    #       '.tmp/styles/{,*/}*.css',
-    #       '<%= yeoman.app %>/styles/{,*/}*.css'
-    #     ]
-    #   }
-    # }
+      # By default, your `index.html` <!-- Usemin Block --> will take care of
+      # minification. This option is pre-configured if you do not wish to use
+      # Usemin blocks.
+      # dist: {
+      #   files: {
+      #     '<%= yeoman.dist %>/styles/main.css': [
+      #       '.tmp/styles/{,*/}*.css',
+      #       '<%= yeoman.app %>/styles/{,*/}*.css'
+      #     ]
+      #   }
+      # }
     htmlmin:
       dist:
         options: {}
         #removeCommentsFromCDATA: true,
-        #          // https://github.com/yeoman/grunt-usemin/issues/44
-        #          //collapseWhitespace: true,
-        #          collapseBooleanAttributes: true,
-        #          removeAttributeQuotes: true,
-        #          removeRedundantAttributes: true,
-        #          useShortDoctype: true,
-        #          removeEmptyAttributes: true,
-        #          removeOptionalTags: true
+        # // https://github.com/yeoman/grunt-usemin/issues/44
+        # //collapseWhitespace: true,
+        # collapseBooleanAttributes: true,
+        # removeAttributeQuotes: true,
+        # removeRedundantAttributes: true,
+        # useShortDoctype: true,
+        # removeEmptyAttributes: true,
+        # removeOptionalTags: true
         files: [
           expand: true
           cwd: '.tmp'
@@ -234,6 +223,11 @@ module.exports = (grunt) ->
           dest: '<%= yeoman.dist %>/images'
           src: ['generated/*']
         ]
+      styles:
+        expand: true
+        cwd: '<%= yeoman.app %>/styles'
+        dest: '.tmp/styles/'
+        src: '{,*/}*.css'
 
     concurrent:
       server: ['coffee:dist', 'jade:dist', 'stylus:dist']
@@ -249,29 +243,27 @@ module.exports = (grunt) ->
       dist:
         html: ['<%= yeoman.dist %>/*.html']
 
+    ngmin:
+      dist:
+        files: [
+          expand: true
+          cwd: '<%= yeoman.dist %>/scripts'
+          src: '*.js'
+          dest: '<%= yeoman.dist %>/scripts'
+        ]
+
     uglify:
       dist:
         files:
-          '<%= yeoman.dist %>/scripts/modules.js': ['<%= yeoman.dist %>/scripts/modules.js']
-
-  grunt.event.on 'watch', (action, filepath, target) ->
-    ext = ''
-    switch target
-      when 'coffee'
-        ext = '.js'
-      when 'jade'
-        ext = '.html'
-      when 'stylus'
-        ext = '.css'
-    dest = '.tmp' + filepath.substring(filepath.indexOf('/'), filepath.lastIndexOf('.')) + ext
-    grunt.config.set target + '.single.src', filepath
-    grunt.config.set target + '.single.dest', dest
+          '<%= yeoman.dist %>/scripts/module.js': ['<%= yeoman.dist %>/scripts/module.js']
 
   grunt.registerTask 'server', (target) ->
-    return grunt.task.run(['build', 'open']) if target is 'dist'
-    grunt.task.run ['clean', 'concurrent:server', 'open', 'watch']
+    if target is 'dist'
+      return grunt.task.run(['build', 'open'])
+    else
+      grunt.task.run ['clean:server', 'concurrent:server', 'autoprefixer', 'open', 'watch']
 
-  grunt.registerTask 'test', ['clean', 'concurrent:test', 'karma']
+  grunt.registerTask 'test', ['clean', 'concurrent:test', 'autoprefixer', 'karma']
 
   grunt.registerTask 'build', ['clean:dist', 'concurrent:dist', 'useminPrepare', 'htmlmin', 'concat', 'copy', 'cdnify', 'cssmin', 'uglify', 'rev', 'usemin']
 

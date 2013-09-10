@@ -1,12 +1,11 @@
 {
-  "name": "sfdcSplashboard",
-  "version": "0.0.0",
+  "name": "express-angular",
+  "version": "0.0.1",
   "dependencies": {
     "es5-shim": "~2.1.0",
     "json3": "~3.2.5",
-    "marionette": "~1.0.4",
-    "bootstrap": "~3.0.0-rc1",
-    "packery": "~1.1.0",
+    "angular": "~1.0.8",
+    "bootstrap": "~3.0.0",
     "handlebars": "~1.0.0"
   },
   "devDependencies": {}
