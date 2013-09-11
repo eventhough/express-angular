@@ -15,8 +15,8 @@ Install [node.js](http://nodejs.org) then open Terminal:
 ## Project Setup
 
     Add to .bash_profile or .bashrc: export NODE_ENV=development
-    fork project
-    clone project
+    
+    $ git clone git@github.com:eventhough/express-angular.git
     $ cd project/
     $ npm install
     $ bower install
