@@ -259,11 +259,11 @@ module.exports = (grunt) ->
     if target is 'dist'
       return grunt.task.run(['build', 'open'])
     else
-      grunt.task.run ['clean', 'concurrent:server', 'autoprefixer', 'open', 'watch']
+      grunt.task.run ['clean:dist', 'concurrent:server', 'autoprefixer', 'open', 'watch']
 
-  grunt.registerTask 'test', ['clean', 'concurrent:test', 'autoprefixer', 'karma']
+  grunt.registerTask 'test', ['clean:dist', 'concurrent:test', 'autoprefixer', 'karma']
 
-  grunt.registerTask 'build', ['clean', 'concurrent:dist', 'useminPrepare', 'htmlmin', 'autoprefixer', 'concat', 'copy', 'cdnify', 'ngmin', 'cssmin', 'uglify', 'rev', 'usemin']
+  grunt.registerTask 'build', ['clean:dist', 'concurrent:dist', 'useminPrepare', 'htmlmin', 'autoprefixer', 'concat', 'copy', 'cdnify', 'ngmin', 'cssmin', 'uglify', 'rev', 'usemin']
 
   grunt.registerTask 'lint', (target) ->
     return ['jshint:app', 'coffeelint:app'] if target is 'app'

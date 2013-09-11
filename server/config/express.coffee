@@ -17,9 +17,6 @@ module.exports = (app) ->
   app.use(app.router)
   app.use(flash())
 
-  # mount dist folder as highest priority
-  app.use(express.static(path.join(__dirname, '../../dist')))
-
   # development only
   if ('development' == process.env.NODE_ENV)
     # live reload configuration
@@ -35,9 +32,11 @@ module.exports = (app) ->
     app.use(express.static(path.join(__dirname, '../../.tmp')))
     app.use(express.static(path.join(__dirname, '../../app')))
     app.use(express.static(path.join(__dirname, '../../test')))
-    app.use(express.static(path.join(__dirname, '../../dist')))
 
     app.use(express.errorHandler)
+
+  # mount all static files (html, css, js)
+  app.use(express.static(path.join(__dirname, '../../dist')))
 
   http.createServer(app).listen(app.get('port'), () ->
     console.log('Express server listening on port ' + app.get('port'))
