@@ -75,6 +75,9 @@ module.exports = (grunt) ->
       server: ['<%= yeoman.server %>/**/*.coffee']
 
     coffee:
+      options:
+        sourceMap: true
+        sourceRoot: ''
       dist:
         files: [
           expand: true
@@ -223,15 +226,10 @@ module.exports = (grunt) ->
           dest: '<%= yeoman.dist %>/images'
           src: ['generated/*']
         ]
-      styles:
-        expand: true
-        cwd: '<%= yeoman.app %>/styles'
-        dest: '.tmp/styles/'
-        src: '{,*/}*.css'
 
     concurrent:
       server: ['coffee:dist', 'jade:dist', 'stylus:dist']
-      test: ['coffee:dist', 'coffee:test']
+      test: ['coffee:dist', 'coffee:test', 'jade:dist', 'stylus:dist']
       dist: ['coffee:dist', 'jade:dist', 'stylus:dist', 'imagemin', 'svgmin']
 
     karma:
@@ -261,11 +259,11 @@ module.exports = (grunt) ->
     if target is 'dist'
       return grunt.task.run(['build', 'open'])
     else
-      grunt.task.run ['clean:server', 'concurrent:server', 'autoprefixer', 'open', 'watch']
+      grunt.task.run ['clean', 'concurrent:server', 'autoprefixer', 'open', 'watch']
 
   grunt.registerTask 'test', ['clean', 'concurrent:test', 'autoprefixer', 'karma']
 
-  grunt.registerTask 'build', ['clean:dist', 'concurrent:dist', 'useminPrepare', 'htmlmin', 'concat', 'copy', 'cdnify', 'cssmin', 'uglify', 'rev', 'usemin']
+  grunt.registerTask 'build', ['clean', 'concurrent:dist', 'useminPrepare', 'htmlmin', 'autoprefixer', 'concat', 'copy', 'cdnify', 'ngmin', 'cssmin', 'uglify', 'rev', 'usemin']
 
   grunt.registerTask 'lint', (target) ->
     return ['jshint:app', 'coffeelint:app'] if target is 'app'

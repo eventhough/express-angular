@@ -1,18 +1,20 @@
-# salesforce.com splashboard
+# Express + Angular Skeleton
 
-Displays live social media posts on various display formats.
+Project originally based on Yeoman. Added support for MongoDB and watching of coffeescript, jade, and stylus files.
 
 ## Global Dependencies
 
 Install [mongodb](http://www.mongodb.org/downloads).
 
-Install [node.js](http://nodejs.org) and then open Terminal:
+Install [node.js](http://nodejs.org) then open Terminal:
 
     npm install -g node-dev
     npm install -g bower
+    npm install -g grunt-cli
 
 ## Project Setup
 
+    Add to .bash_profile or .bashrc: export NODE_ENV=development
     fork project
     clone project
     $ cd project/
@@ -22,17 +24,19 @@ Install [node.js](http://nodejs.org) and then open Terminal:
     $ node-dev server/server.coffee (second tab)
     $ grunt server (third tab)
 
-## Testing
+## Development
 
-n/a
+Open [localhost:3000](http://localhost:3000)
 
-Open [localhost:9000](http://localhost:9000)
-
-You can lint the javascript and CoffeeScript code using:
+Lint your javascript and coffeescript using:
 
     $ grunt lint
 
-The config can be changed in `./jshintrc` and `./coffeelintrc`.
+Lint config can be changed in `./jshintrc` and `./coffeelintrc`.
+
+## Heroku Deployment
+
+    Nothing here yet
 
 ## Sublime Text 2
 

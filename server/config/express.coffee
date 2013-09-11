@@ -34,6 +34,8 @@ module.exports = (app) ->
     # mount development folders
     app.use(express.static(path.join(__dirname, '../../.tmp')))
     app.use(express.static(path.join(__dirname, '../../app')))
+    app.use(express.static(path.join(__dirname, '../../test')))
+    app.use(express.static(path.join(__dirname, '../../dist')))
 
     app.use(express.errorHandler)
 
