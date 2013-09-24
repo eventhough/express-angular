@@ -9,17 +9,17 @@ module.exports = (app) ->
   # all environments
   app.set('port', process.env.PORT || 3000)
   app.use(express.favicon())
-  app.use(express.logger('dev'))
+  app.use(express.logger())
   app.use(express.bodyParser())
   app.use(express.methodOverride())
-  app.use(express.cookieParser('p03T1cJuSt1C3'))
-  app.use(express.session())
+  app.use(express.cookieParser('P03t1cJu5t1c3'))
+  app.use(express.session({ secret: 'K3ndr1ckLamar', key: 'sid', cookie: { secure: true }}))
   app.use(app.router)
   app.use(flash())
 
   # development only
   if ('development' == process.env.NODE_ENV)
-    # live reload configuration
+    # live reload configuration for grunt
     liveReloadPort = 35729
     excludeList = ['.woff', '.flv']
 

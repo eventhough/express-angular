@@ -8,24 +8,24 @@ module.exports = (app, passport) ->
 
       if err
         console.log 'login err'
-        return next(err) 
+        return next(err)
       if !user
         console.log 'user not found'
         req.session.messages =  [info.message]
         return res.redirect('/')
-      
+
       req.logIn(user, (err) ->
         if err
           console.log 'error'
-          return next(err) 
+          return next(err)
         console.log 'no error'
         return res.redirect('/account')
       )
-    )(req, res, next) 
+    )(req, res, next)
 
   logout = (req, res) ->
     req.logout()
     res.redirect '/'
-        
+
   app.post '/login', login
   app.post '/logout', logout
