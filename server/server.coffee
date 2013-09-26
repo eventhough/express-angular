@@ -10,7 +10,7 @@ app = express()
 require('./config/express')(app)
 
 #Authentication middleware
-#require('./config/passport')(app, passport)
+require('./config/passport')(app, passport)
 
 # Mount routes
 require('./routes')(app, passport)

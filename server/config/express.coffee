@@ -1,7 +1,6 @@
 express = require 'express'
 http = require 'http'
 path = require 'path'
-flash = require 'connect-flash'
 liveReload = require 'connect-livereload'
 
 module.exports = (app) ->
@@ -15,7 +14,6 @@ module.exports = (app) ->
   app.use(express.cookieParser('P03t1cJu5t1c3'))
   app.use(express.session({ secret: 'K3ndr1ckLamar', key: 'sid', cookie: { secure: true }}))
   app.use(app.router)
-  app.use(flash())
 
   # development only
   if ('development' == process.env.NODE_ENV)

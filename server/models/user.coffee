@@ -17,7 +17,7 @@ userSchema = Schema
   password:
     type: String
     required: true
-  accessToken: # used for Remember Me
+  accessToken: # used for session
     type: String
 
 # Bcrypt middleware
