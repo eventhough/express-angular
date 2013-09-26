@@ -8,7 +8,9 @@ db = require './config/database'
 # App initialization and configuration
 app = express()
 require('./config/express')(app)
-require('./config/passport')(app, passport)
+
+#Authentication middleware
+#require('./config/passport')(app, passport)
 
 # Mount routes
 require('./routes')(app, passport)
