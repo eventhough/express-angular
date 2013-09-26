@@ -5,7 +5,7 @@ DATABASE_URI = process.env.MONGOLAB_URI || 'mongodb://localhost'
 DATABASE_NAME = '/test'
 MONGODB = DATABASE_URI + DATABASE_NAME
 
-# Connnect to the database
+# Connect to the database
 mongoose = require 'mongoose'
 mongoose.connect MONGODB
 
