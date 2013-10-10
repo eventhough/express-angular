@@ -4,11 +4,12 @@ path = require 'path'
 liveReload = require 'connect-livereload'
 
 module.exports = (app) ->
+  loggerFormat = if 'development' == process.env.NODE_ENV then 'dev' else 'default'
 
   # all environments
   app.set('port', process.env.PORT || 3000)
   app.use(express.favicon())
-  app.use(express.logger())
+  app.use(express.logger(loggerFormat))
   app.use(express.bodyParser())
   app.use(express.methodOverride())
   app.use(express.cookieParser('P03t1cJu5t1c3'))
